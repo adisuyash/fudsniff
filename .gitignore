@@ -1,0 +1,33 @@
+# Frontend (Node.js/Next.js)
+/node_modules
+/.pnp
+.pnp.*
+/frontend/.next/
+/frontend/out/
+/frontend/build
+frontend/node_modules/
+
+# Backend (Python)
+backend/venv/
+backend/env/
+backend/.venv/
+backend/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+backend/*.so
+backend/*.db
+backend/*.sqlite3
+backend/*.log
+
+# Environment files (IMPORTANT for API keys!)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env*
+
+# OS & IDE
+.DS_Store
+*.pem
+.vscode/
+.idea/
