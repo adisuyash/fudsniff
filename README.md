@@ -37,16 +37,14 @@ This will:
 Create a `.env` file inside the `backend/` directory with the following:
 
 ```
-# AI APIs (you need at least one)
-OPENROUTER_API_KEY=
-ANTHROPIC_API_KEY=
-OPENAI_API_KEY=
+# Google Gemini API Key
+GEMINI_API_KEY=your_api_key
 
-# Market Data (optional but recommended)
-COINGECKO_API_KEY=
+# CoinGecko API Key
+COINGECKO_API_KEY=your_api_key
 
-# News API (optional - uses sample data if missing)
-NEWS_API_KEY=
+# News API (optional - will use sample data if not provided)
+NEWS_API_KEY=your_newsapi_key_here
 
 # Flask Configuration
 FLASK_ENV=development
