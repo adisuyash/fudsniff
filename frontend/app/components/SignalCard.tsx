@@ -1,21 +1,40 @@
-// app/components/SignalCard.tsx
 "use client";
 
+import React from "react";
 import { TrendingUp, TrendingDown, AlertCircle } from "lucide-react";
+import { FC } from "react";
 
-export function SignalCard({ signal, confidence, reasoning, coin, timestamp }) {
-  const color =
-    {
-      BUY: "green",
-      SHORT: "red",
-      HOLD: "yellow",
-    }[signal] || "gray";
+type SignalType = "BUY" | "SHORT" | "HOLD";
 
-  const icon = {
+interface SignalCardProps {
+  signal: SignalType;
+  confidence: number;
+  reasoning: string;
+  coin: string;
+  timestamp: string | number | Date;
+}
+
+export const SignalCard: FC<SignalCardProps> = ({
+  signal,
+  confidence,
+  reasoning,
+  coin,
+  timestamp,
+}) => {
+  const colorMap: Record<SignalType, string> = {
+    BUY: "green",
+    SHORT: "red",
+    HOLD: "yellow",
+  };
+
+  const iconMap: Record<SignalType, React.ReactElement> = {
     BUY: <TrendingUp className="w-5 h-5" />,
     SHORT: <TrendingDown className="w-5 h-5" />,
     HOLD: <AlertCircle className="w-5 h-5" />,
-  }[signal];
+  };
+
+  const color = colorMap[signal];
+  const icon = iconMap[signal];
 
   return (
     <div
@@ -38,4 +57,4 @@ export function SignalCard({ signal, confidence, reasoning, coin, timestamp }) {
       </div>
     </div>
   );
-}
+};

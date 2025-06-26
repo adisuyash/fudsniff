@@ -151,7 +151,14 @@ export function FudSniffDashboard() {
               </div>
             ) : (
               signals.map((signal) => (
-                <SignalCard key={signal.id} {...signal} />
+                <SignalCard
+                  key={signal.id}
+                  signal={signal.signal as "BUY" | "SHORT" | "HOLD"}
+                  confidence={signal.confidence}
+                  reasoning={signal.reasoning}
+                  coin={signal.coin}
+                  timestamp={signal.timestamp}
+                />
               ))
             )}
           </div>
