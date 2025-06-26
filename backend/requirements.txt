@@ -4,3 +4,5 @@ protobuf==4.25.3
 python-dotenv==1.1.1
 google-generativeai==0.4.1
 requests==2.32.4
+gunicorn==21.2.0
+
