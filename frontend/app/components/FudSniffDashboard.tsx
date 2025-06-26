@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { BarChart3, RefreshCw, Newspaper } from "lucide-react";
 import { analyzeNews } from "@/app/lib/api";
 import { SignalCard } from "@/app/components/SignalCard";
+import Image from "next/image";
+import Link from "next/link";
 
 interface NewsArticle {
   title: string;
@@ -77,158 +79,189 @@ export function FudSniffDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-3">
-          <BarChart3 className="w-6 h-6 text-blue-600" />
-          <h1 className="text-xl font-bold text-gray-900">
-            FudSniff Dashboard
-          </h1>
+    <div className="relative w-full h-full font-[family-name:var(--font-geist-sans)] text-gray-100">
+      {/* <div className="fixed top-10 left-10 flex items-center gap-4 z-10">
+        <div className="relative group">
+          <Image
+            src="/fudsniff.png"
+            alt="FudSniff logo"
+            width={48}
+            height={48}
+            className="h-12 w-12 transition-transform duration-200 group-hover:scale-110"
+            priority
+          />
+          <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 rounded-full blur-md transition-opacity duration-200 -z-10"></div>
         </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Input Card */}
-          <div className="bg-white rounded-lg p-6 shadow">
-            <div className="flex items-center gap-2 mb-4">
-              <Newspaper className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-bold text-gray-800">Analyze News</h2>
-            </div>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleAnalyze(newsText);
-              }}
-            >
-              <textarea
-                rows={4}
-                className="w-full p-3 border rounded-lg text-sm focus:outline-none text-gray-700"
-                placeholder="Paste crypto news article here..."
-                value={newsText}
-                onChange={(e) => setNewsText(e.target.value)}
-                disabled={isLoading}
-              />
-              <div className="mt-4 flex justify-between">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setNewsText(
-                      "Bitcoin surges as MicroStrategy buys more BTC..."
-                    )
-                  }
-                  className="text-sm text-blue-500 hover:underline"
-                  disabled={isLoading}
-                >
-                  Use Sample
-                </button>
-                <button
-                  type="submit"
-                  disabled={!newsText || isLoading}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-                >
-                  {isLoading ? (
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <BarChart3 className="w-4 h-4" />
-                  )}
-                  {isLoading ? "Analyzing..." : "Analyze"}
-                </button>
-              </div>
-            </form>
-          </div>
-
-          {/* Results */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800">
-              Recent Signals
-            </h3>
-            {signals.length === 0 ? (
-              <div className="bg-white text-center p-6 rounded-lg shadow">
-                <p className="text-sm text-gray-500">
-                  No signals yet. Paste a news article to begin.
-                </p>
-              </div>
-            ) : (
-              signals.map((signal) => (
-                <SignalCard
-                  key={signal.id}
-                  signal={signal.signal as "BUY" | "SHORT" | "HOLD"}
-                  confidence={signal.confidence}
-                  reasoning={signal.reasoning}
-                  coin={signal.coin}
-                  timestamp={signal.timestamp}
-                />
-              ))
-            )}
-          </div>
+        <h1 className="text-3xl font-bold tracking-tight text-white">
+          Fud Sniff
+        </h1>
+      </div> */}
+      <Link
+        href="/"
+        className="fixed top-10 left-10 flex items-center gap-4 z-10 group"
+      >
+        <div className="relative">
+          <Image
+            src="/fudsniff.png"
+            alt="FudSniff logo"
+            width={48}
+            height={48}
+            className="h-12 w-12 transition-transform duration-200 group-hover:scale-110"
+            priority
+          />
+          <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 rounded-full blur-md transition-opacity duration-200 -z-10"></div>
         </div>
+        <h1 className="text-3xl font-bold tracking-tight text-white">
+          Fud Sniff
+        </h1>
+      </Link>
 
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white p-4 rounded shadow text-center">
-              <div className="text-blue-600 text-xl font-bold">
-                {stats.totalAnalyses}
+      <div className="mt-32 px-4 sm:px-8 md:px-16 w-full max-w-6xl mx-auto overflow-y-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            {/* Input */}
+            <div className="bg-black/20 border border-white/10 backdrop-blur rounded-xl p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Newspaper className="w-5 h-5 text-white/70" />
+                <h2 className="text-2xl font-bold">Analyze News</h2>
               </div>
-              <div className="text-xs text-gray-600">Total Analyses</div>
-            </div>
-            <div className="bg-white p-4 rounded shadow text-center">
-              <div className="text-green-600 text-xl font-bold">
-                {stats.buySignals}
-              </div>
-              <div className="text-xs text-gray-600">Buy Signals</div>
-            </div>
-            <div className="bg-white p-4 rounded shadow text-center">
-              <div className="text-red-600 text-xl font-bold">
-                {stats.shortSignals}
-              </div>
-              <div className="text-xs text-gray-600">Short Signals</div>
-            </div>
-            <div className="bg-white p-4 rounded shadow text-center">
-              <div className="text-purple-600 text-xl font-bold">
-                {stats.avgConfidence}%
-              </div>
-              <div className="text-xs text-gray-600">Avg Confidence</div>
-            </div>
-          </div>
-
-          {/* Latest News */}
-          <div className="bg-white p-4 rounded shadow">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-sm font-semibold text-gray-800">
-                Latest News
-              </h3>
-              <button
-                onClick={() => window.location.reload()}
-                className="p-1 text-blue-600"
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAnalyze(newsText);
+                }}
               >
-                <RefreshCw className="w-4 h-4" />
-              </button>
-            </div>
-            <ul className="space-y-3 text-sm">
-              {latestNews.map((news, i) => (
-                <li key={i} className="border-b pb-2">
-                  <strong>{news.title}</strong>
-                  <p className="text-xs text-gray-600 mb-2">
-                    {news.description}
-                  </p>
+                <textarea
+                  rows={4}
+                  className="w-full p-3 rounded-lg text-sm text-white bg-black/30 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/20"
+                  placeholder="Paste crypto news article here..."
+                  value={newsText}
+                  onChange={(e) => setNewsText(e.target.value)}
+                  disabled={isLoading}
+                />
+                <div className="mt-4 flex justify-between items-center">
                   <button
+                    type="button"
                     onClick={() =>
-                      handleAnalyze(`${news.title}. ${news.description}`)
+                      setNewsText(
+                        "Bitcoin surges as MicroStrategy buys more BTC..."
+                      )
                     }
+                    className="text-sm text-blue-400 hover:underline"
                     disabled={isLoading}
-                    className="text-blue-500 text-xs hover:underline"
                   >
-                    Quick Analyze
+                    Use Sample
                   </button>
-                </li>
-              ))}
-            </ul>
+                  <button
+                    type="submit"
+                    disabled={!newsText || isLoading}
+                    className="group relative overflow-hidden rounded-md border border-gray-600 text-sm sm:text-base text-gray-900 bg-white transition-all duration-300 font-medium disabled:bg-gray-500 px-4 py-2 flex items-center gap-2"
+                  >
+                    {isLoading ? (
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <BarChart3 className="w-4 h-4" />
+                    )}
+                    {isLoading ? "Analyzing..." : "Analyze"}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Signal Results */}
+            <div className="space-y-4">
+              <h3 className="text-2xl font-semibold text-white">
+                Recent Signals
+              </h3>
+              {signals.length === 0 ? (
+                <div className="bg-black/20 p-6 text-center rounded-xl border border-white/10">
+                  <p className="text-sm text-white/60">
+                    No signals yet. Paste a news article to begin.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+                  {signals.map((signal) => (
+                    <SignalCard
+                      key={signal.id}
+                      signal={signal.signal as "BUY" | "SHORT" | "HOLD"}
+                      confidence={signal.confidence}
+                      reasoning={signal.reasoning}
+                      coin={signal.coin}
+                      timestamp={signal.timestamp}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-black/20 p-4 rounded-xl text-center border border-white/10">
+                <div className="text-white text-2xl font-bold">
+                  {stats.totalAnalyses}
+                </div>
+                <div className="text-sm text-white/60">Total Analyses</div>
+              </div>
+              <div className="bg-black/20 p-4 rounded-xl text-center border border-white/10">
+                <div className="text-purple-300 text-2xl font-bold">
+                  {stats.avgConfidence}%
+                </div>
+                <div className="text-sm text-white/60">Avg Confidence</div>
+              </div>
+              <div className="bg-black/20 p-4 rounded-xl text-center border border-white/10">
+                <div className="text-green-400 text-2xl font-bold">
+                  {stats.buySignals}
+                </div>
+                <div className="text-sm text-white/60">Buy Signals</div>
+              </div>
+              <div className="bg-black/20 p-4 rounded-xl text-center border border-white/10">
+                <div className="text-red-400 text-2xl font-bold">
+                  {stats.shortSignals}
+                </div>
+                <div className="text-sm text-white/60">Short Signals</div>
+              </div>
+            </div>
+
+            <div className="bg-black/20 p-4 rounded-xl border border-white/10">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-white">
+                  Latest News
+                </h3>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="p-1 text-white/70 hover:text-white"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </button>
+              </div>
+              <ul className="space-y-3 text-sm text-white/90">
+                {latestNews.map((news, i) => (
+                  <li key={i} className="border-b border-white/10 pb-2">
+                    <strong className="text-base text-white font-semibold">
+                      {news.title}
+                    </strong>
+                    <p className="text-sm text-white/60 mb-2">
+                      {news.description}
+                    </p>
+                    <button
+                      onClick={() =>
+                        handleAnalyze(`${news.title}. ${news.description}`)
+                      }
+                      disabled={isLoading}
+                      className="text-blue-400 text-sm hover:underline"
+                    >
+                      Quick Analyze
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

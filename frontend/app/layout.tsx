@@ -34,7 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
         <div className="flex flex-col h-full justify-between">
-          <main className="flex-1 flex items-center justify-center px-6 sm:px-12">
+          <main className="flex-1 overflow-y-auto flex items-center justify-center px-6 sm:px-12">
             {children}
           </main>
           <Footer />

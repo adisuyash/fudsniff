@@ -14,7 +14,7 @@ export default function Home() {
     <div className="flex flex-col items-center text-center gap-8 font-[family-name:var(--font-geist-mono)] w-full max-w-3xl text-gray-100">
       {mounted && <Paws />}{" "}
       <div className="flex items-center space-x-4 sm:space-x-6">
-        <div className="relative group">
+        <div className="relative group"> 
           <Image
             src="/fudsniff.png"
             alt="FudSniff logo"
