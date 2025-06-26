@@ -16,8 +16,24 @@ ai_analyzer = AIAnalyzer()
 market_data = MarketData()
 news_fetcher = NewsFetcher()
 
-@app.route('/api/analyze', methods=['POST'])
+@app.route('/api/analyze', methods=['POST', 'GET'])
 def analyze_news():
+    if request.method == 'GET':
+        return jsonify({'message': 'Use POST with JSON {"news_text": "..."}'}), 200
+
+    try:
+        data = request.get_json()
+        news_text = data.get('news_text', '')
+        
+        if not news_text:
+            return jsonify({'error': 'No news text provided'}), 400
+        
+        result = ai_analyzer.analyze_news(news_text)
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
     """Analyze news text for trading signals"""
     try:
         data = request.get_json()
@@ -83,8 +99,9 @@ def health_check():
     """Health check endpoint"""
     return jsonify({
         'status': 'healthy',
-        'ai_available': ai_analyzer.anthropic_client is not None or ai_analyzer.openai_client is not None
+        'ai_available': True
     })
+
 
 if __name__ == '__main__':
     port = int(os.getenv('FLASK_PORT', 5000))
