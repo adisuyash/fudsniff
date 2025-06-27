@@ -6,6 +6,7 @@ import { analyzeNews } from "@/app/lib/api";
 import { SignalCard } from "@/app/components/SignalCard";
 import Image from "next/image";
 import Link from "next/link";
+import Paws from "./paws";
 
 interface NewsArticle {
   title: string;
@@ -80,22 +81,8 @@ export function FudSniffDashboard() {
 
   return (
     <div className="relative w-full h-full font-[family-name:var(--font-geist-sans)] text-gray-100">
-      {/* <div className="fixed top-10 left-10 flex items-center gap-4 z-10">
-        <div className="relative group">
-          <Image
-            src="/fudsniff.png"
-            alt="FudSniff logo"
-            width={48}
-            height={48}
-            className="h-12 w-12 transition-transform duration-200 group-hover:scale-110"
-            priority
-          />
-          <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 rounded-full blur-md transition-opacity duration-200 -z-10"></div>
-        </div>
-        <h1 className="text-3xl font-bold tracking-tight text-white">
-          Fud Sniff
-        </h1>
-      </div> */}
+      <Paws />
+
       <Link
         href="/"
         className="fixed top-10 left-10 flex items-center gap-4 z-10 group"
@@ -116,9 +103,10 @@ export function FudSniffDashboard() {
         </h1>
       </Link>
 
-      <div className="mt-32 px-4 sm:px-8 md:px-16 w-full max-w-6xl mx-auto overflow-y-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
+      <div className="mt-32 w-full max-w-7xl mx-auto flex flex-col flex-1 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1 px-4 sm:px-8 md:px-16 min-h-0">
+          {/* Main Analysis + Signals */}
+          <div className="lg:col-span-2 flex flex-col gap-8 min-h-0">
             {/* Input */}
             <div className="bg-black/20 border border-white/10 backdrop-blur rounded-xl p-6">
               <div className="flex items-center gap-2 mb-4">
@@ -155,33 +143,47 @@ export function FudSniffDashboard() {
                   <button
                     type="submit"
                     disabled={!newsText || isLoading}
-                    className="group relative overflow-hidden rounded-md border border-gray-600 text-sm sm:text-base text-gray-900 bg-white transition-all duration-300 font-medium disabled:bg-gray-500 px-4 py-2 flex items-center gap-2"
+                    className="group relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-r from-white to-gray-200 text-black px-5 py-2 font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isLoading ? (
-                      <RefreshCw className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <BarChart3 className="w-4 h-4" />
-                    )}
-                    {isLoading ? "Analyzing..." : "Analyze"}
+                    <div className="flex items-center gap-2">
+                      {isLoading ? (
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <BarChart3 className="w-4 h-4" />
+                      )}
+                      {isLoading ? "Sniffing..." : "Analyze"}
+                    </div>
                   </button>
                 </div>
               </form>
             </div>
 
-            {/* Signal Results */}
-            <div className="space-y-4">
-              <h3 className="text-2xl font-semibold text-white">
+            {/* Signals */}
+            <div className="flex-1 min-h-0 flex flex-col">
+              <h3 className="text-2xl font-semibold text-white mb-2">
                 Recent Signals
               </h3>
-              {signals.length === 0 ? (
-                <div className="bg-black/20 p-6 text-center rounded-xl border border-white/10">
-                  <p className="text-sm text-white/60">
-                    No signals yet. Paste a news article to begin.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
-                  {signals.map((signal) => (
+              <div className="flex-1 overflow-y-auto pr-1 space-y-3">
+                {signals.length === 0 ? (
+                  <div className="bg-black/20 p-6 text-center rounded-xl border border-white/10">
+                    <div className="mb-3 opacity-30">
+                      <Image
+                        src="/pawprint.png"
+                        alt=""
+                        width={60}
+                        height={60}
+                        className="w-12 h-12 mx-auto filter grayscale"
+                      />
+                    </div>
+                    <p className="text-gray-400 text-lg mb-2">
+                      No signals detected yet
+                    </p>
+                    <p className="text-sm text-white/60">
+                      Paste a crypto news article above to analyze.
+                    </p>
+                  </div>
+                ) : (
+                  signals.map((signal) => (
                     <SignalCard
                       key={signal.id}
                       signal={signal.signal as "BUY" | "SHORT" | "HOLD"}
@@ -190,42 +192,51 @@ export function FudSniffDashboard() {
                       coin={signal.coin}
                       timestamp={signal.timestamp}
                     />
-                  ))}
-                </div>
-              )}
+                  ))
+                )}
+              </div>
             </div>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="flex flex-col space-y-6 min-h-0">
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-black/20 p-4 rounded-xl text-center border border-white/10">
-                <div className="text-white text-2xl font-bold">
-                  {stats.totalAnalyses}
+              {[
+                {
+                  label: "Total Analyses",
+                  value: stats.totalAnalyses,
+                  color: "text-white",
+                },
+                {
+                  label: "Avg Confidence",
+                  value: `${stats.avgConfidence}%`,
+                  color: "text-purple-300",
+                },
+                {
+                  label: "Buy Signals",
+                  value: stats.buySignals,
+                  color: "text-green-400",
+                },
+                {
+                  label: "Short Signals",
+                  value: stats.shortSignals,
+                  color: "text-red-400",
+                },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="bg-black/20 p-4 rounded-xl text-center border border-white/10"
+                >
+                  <div className={`${item.color} text-2xl font-bold`}>
+                    {item.value}
+                  </div>
+                  <div className="text-sm text-white/60">{item.label}</div>
                 </div>
-                <div className="text-sm text-white/60">Total Analyses</div>
-              </div>
-              <div className="bg-black/20 p-4 rounded-xl text-center border border-white/10">
-                <div className="text-purple-300 text-2xl font-bold">
-                  {stats.avgConfidence}%
-                </div>
-                <div className="text-sm text-white/60">Avg Confidence</div>
-              </div>
-              <div className="bg-black/20 p-4 rounded-xl text-center border border-white/10">
-                <div className="text-green-400 text-2xl font-bold">
-                  {stats.buySignals}
-                </div>
-                <div className="text-sm text-white/60">Buy Signals</div>
-              </div>
-              <div className="bg-black/20 p-4 rounded-xl text-center border border-white/10">
-                <div className="text-red-400 text-2xl font-bold">
-                  {stats.shortSignals}
-                </div>
-                <div className="text-sm text-white/60">Short Signals</div>
-              </div>
+              ))}
             </div>
 
-            <div className="bg-black/20 p-4 rounded-xl border border-white/10">
+            {/* News */}
+            <div className="bg-black/20 p-4 rounded-xl border border-white/10 max-h-[40vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-white">
                   Latest News
@@ -237,7 +248,7 @@ export function FudSniffDashboard() {
                   <RefreshCw className="w-4 h-4" />
                 </button>
               </div>
-              <ul className="space-y-3 text-sm text-white/90">
+              <ul className="space-y-3 text-sm text-white/90 max-h-[40vh] overflow-y-auto pr-1">
                 {latestNews.map((news, i) => (
                   <li key={i} className="border-b border-white/10 pb-2">
                     <strong className="text-base text-white font-semibold">
