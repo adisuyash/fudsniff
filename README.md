@@ -1,6 +1,6 @@
 # <img src="frontend/public/fudsniff.png" alt="Logo" height="25" /> Fud Sniff
 
-Fud Sniff is a trading signal agent that sniffs real-time crypto sentiment and news to generate high-confidence signals for market action.
+Fud Sniff is an AI signal agent that analyzes real-time crypto chatter, news, and market data to generate high-confidence trading signals.
 
 ![Fud Sniff Banner](frontend/public/fudsniff-banner.png)
 

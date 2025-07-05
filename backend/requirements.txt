@@ -5,4 +5,5 @@ python-dotenv==1.1.1
 google-generativeai==0.4.1
 requests==2.32.4
 gunicorn==21.2.0
-
+python-telegram-bot==20.7
+websockets==11.0.2
