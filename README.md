@@ -1,6 +1,6 @@
 # <img src="frontend/public/fudsniff.png" alt="Logo" height="25" /> Fud Sniff
 
-Fud Sniff is an AI signal agent that analyzes real-time crypto chatter, news, and market data to generate high-confidence trading signals.
+Fud Sniff is a trading signal agent that sniffs real-time crypto sentiment and news to generate high-confidence signals for market action.
 
 ![Fud Sniff Banner](frontend/public/fudsniff-banner.png)
 
@@ -8,7 +8,7 @@ Fud Sniff is an AI signal agent that analyzes real-time crypto chatter, news, an
 
 ```
 fudsniff/
-├── backend/      # Flask API, AI integration, market/news handlers
+├── backend/      # Powered by Superior Agents - Flask API, AI integration, market/news handlers
 ├── frontend/     # Next.js UI, sentiment dashboards
 └── setup.sh      # One-click local setup
 ```
@@ -68,4 +68,4 @@ Make sure to add your API keys in `backend/.env` before running the app.
 
 ## Additional Info
 
-Built by [AdiSuyash](https://x.com/adisuyash) ⚡ • Powered by [Superior Agents](https://superioragents.com/) 💛
+Built by [AdiSuyash](https://x.com/adisuyash) ⚡ • Powered by [Superior Agents](https://superioragents.com) 💛
