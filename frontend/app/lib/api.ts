@@ -21,3 +21,17 @@ export const analyzeNews = async (text: string) => {
     throw error;
   }
 };
+
+export const fetchManualSignals = async () => {
+  try {
+    const res = await fetch(`${baseURL}/api/manual/signals`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch manual signals");
+    }
+    const data = await res.json();
+    return data.signals || [];
+  } catch (error) {
+    console.error("Error loading manual signals:", error);
+    return [];
+  }
+};

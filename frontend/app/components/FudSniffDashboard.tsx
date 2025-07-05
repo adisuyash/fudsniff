@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { BarChart3, RefreshCw, Newspaper } from "lucide-react";
-import { analyzeNews } from "@/app/lib/api";
+import { BarChart3, RefreshCw, Newspaper, PawPrint } from "lucide-react";
+import { analyzeNews, fetchManualSignals } from "@/app/lib/api";
 import { SignalCard } from "@/app/components/SignalCard";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,11 +36,22 @@ export function FudSniffDashboard() {
   });
 
   useEffect(() => {
+    const loadSignals = async () => {
+      try {
+        const data = await fetchManualSignals();
+        setSignals(data || []);
+      } catch (err) {
+        console.error("Error fetching manual signals:", err);
+      }
+    };
+
     const loadNews = async () => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news`);
       const data = await res.json();
       setLatestNews(data.news || []);
     };
+
+    loadSignals();
     loadNews();
   }, []);
 
@@ -82,10 +93,9 @@ export function FudSniffDashboard() {
   return (
     <div className="relative w-full h-full font-[family-name:var(--font-geist-sans)] text-gray-100">
       <Paws />
-
       <Link
         href="/"
-        className="fixed top-10 left-10 flex items-center gap-4 z-10 group"
+        className="fixed top-10 left-10 flex items-center gap-4 z-100"
       >
         <div className="relative">
           <Image
@@ -93,10 +103,9 @@ export function FudSniffDashboard() {
             alt="FudSniff logo"
             width={48}
             height={48}
-            className="h-12 w-12 transition-transform duration-200 group-hover:scale-110"
+            className="h-12 w-12"
             priority
           />
-          <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 rounded-full blur-md transition-opacity duration-200 -z-10"></div>
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-white">
           Fud Sniff
@@ -120,8 +129,8 @@ export function FudSniffDashboard() {
                 }}
               >
                 <textarea
-                  rows={4}
-                  className="w-full p-3 rounded-lg text-sm text-white bg-black/30 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/20"
+                  rows={2}
+                  className="w-full p-3 rounded-lg text-sm text-white bg-black/30 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/20 resize-none"
                   placeholder="Paste crypto news article here..."
                   value={newsText}
                   onChange={(e) => setNewsText(e.target.value)}
@@ -130,20 +139,32 @@ export function FudSniffDashboard() {
                 <div className="mt-4 flex justify-between items-center">
                   <button
                     type="button"
-                    onClick={() =>
-                      setNewsText(
-                        "Bitcoin surges as MicroStrategy buys more BTC..."
-                      )
-                    }
+                    onClick={() => {
+                      const samples = [
+                        "Bitcoin surges as MicroStrategy buys more BTC, boosting investor confidence.",
+                        "Ethereum's (ETH) Dencun upgrade launches, reducing gas fees and increasing scalability.",
+                        "Solana (SOL) network experiences record-breaking NFT sales volume this week.",
+                        "Notcoin (NOT) price rallies after major exchange listing announcement.",
+                        "Ripple (XRP) gains as court rules in favor of partial regulatory clarity.",
+                        "Cardano (ADA) introduces Hydra scaling solution, improving transaction throughput.",
+                        "PEPE memecoin spikes 50% amid viral social media campaign.",
+                        "Dogecoin (DOGE) jumps after Elon Musk tweets about future integrations.",
+                        "Polygon (POL) partners with major DeFi protocol to expand ecosystem.",
+                        "Avalanche (AVAX) secures $100M in new DeFi project funding.",
+                      ];
+                      const randomSample =
+                        samples[Math.floor(Math.random() * samples.length)];
+                      setNewsText(randomSample);
+                    }}
                     className="text-sm text-blue-400 hover:underline"
                     disabled={isLoading}
                   >
-                    Use Sample
+                    Get Random News
                   </button>
                   <button
                     type="submit"
                     disabled={!newsText || isLoading}
-                    className="group relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-r from-white to-gray-200 text-black px-5 py-2 font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="group relative overflow-hidden rounded-lg border border-white/20 bg-gradient-to-r from-white to-gray-200 text-black px-5 py-2 font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <div className="flex items-center gap-2">
                       {isLoading ? (
@@ -151,7 +172,7 @@ export function FudSniffDashboard() {
                       ) : (
                         <BarChart3 className="w-4 h-4" />
                       )}
-                      {isLoading ? "Sniffing..." : "Analyze"}
+                      {isLoading ? "Analyzing..." : "Analyze"}
                     </div>
                   </button>
                 </div>
@@ -160,7 +181,8 @@ export function FudSniffDashboard() {
 
             {/* Signals */}
             <div className="flex-1 min-h-0 flex flex-col">
-              <h3 className="text-2xl font-semibold text-white mb-2">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                <PawPrint className="w-5" />
                 Recent Signals
               </h3>
               <div className="flex-1 overflow-y-auto pr-1 space-y-3">
