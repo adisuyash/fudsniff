@@ -19,7 +19,7 @@ fudsniff/
 Clone the repository and run the setup script:
 
 ```bash
-git clone https://github.com/adisuyash/fudsniff.git
+git clone --recurse-submodules https://github.com/adisuyash/fudsniff.git
 cd fudsniff
 chmod +x setup.sh
 ./setup.sh
