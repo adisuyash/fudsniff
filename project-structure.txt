@@ -1,23 +1,37 @@
 .
 ├── README.md
 ├── backend
-│   ├── __pycache__
-│   │   ├── ai_analyzer.cpython-311.pyc
-│   │   ├── market_data.cpython-311.pyc
-│   │   ├── news_fetcher.cpython-311.pyc
-│   │   └── prompts.cpython-311.pyc
+│   ├── Procfile
+│   ├── agents
+│   │   ├── __init__.py
+│   │   ├── ai_analyzer_integration.py
+│   │   ├── rag_system.py
+│   │   └── test_rag.py
 │   ├── ai_analyzer.py
 │   ├── app.py
+│   ├── fudsniff_rag.db
 │   ├── list_models.py
 │   ├── market_data.py
 │   ├── news_fetcher.py
 │   ├── prompts.py
-│   └── requirements.txt
+│   ├── requirements.txt
+│   ├── runtime.txt
+│   ├── sa_adapter
+│   │   ├── __init__.py
+│   │   └── teacher_agent.py
+│   ├── superior-agents/ (added as a sub-module)
+│   ├── telegram_bot.log
+│   ├── telegram_service.py
+│   ├── test_bot.py
+│   └── token_detector.py
 ├── frontend
 │   ├── README.md
 │   ├── app
 │   │   ├── components
-│   │   │   ├── dashboard
+│   │   │   ├── FudSniffDashboard.tsx
+│   │   │   ├── Navigation.tsx
+│   │   │   ├── SignalCard.tsx
+│   │   │   ├── Toast.tsx
 │   │   │   ├── footer.tsx
 │   │   │   └── paws.tsx
 │   │   ├── dashboard
@@ -27,7 +41,9 @@
 │   │   ├── layout.tsx
 │   │   ├── lib
 │   │   │   └── api.ts
-│   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   └── telegram-signals
+│   │       └── page.tsx
 │   ├── next-env.d.ts
 │   ├── next.config.ts
 │   ├── package-lock.json
@@ -43,8 +59,9 @@
 │   │   ├── superioragents.png
 │   │   ├── vercel.svg
 │   │   └── window.svg
-│   └── tsconfig.json
-├── setup.sh
-└── structure.txt
+│   ├── tsconfig.json
+│   └── vercel.json
+├── project-structure.txt
+└── setup.sh
 
-10 directories, 38 files
+11 directories, 53 files

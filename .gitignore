@@ -12,6 +12,7 @@ backend/venv/
 backend/env/
 backend/.venv/
 backend/__pycache__/
+backend/agents/__pycache__/
 backend/*.py[cod]
 backend/*$py.class
 backend/*.so

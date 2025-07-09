@@ -11,6 +11,8 @@ from market_data import MarketData
 from news_fetcher import NewsFetcher
 from telegram_service import TelegramMonitor
 
+from backend.sa_adapter.teacher_agent import TeacherAgent
+
 # Load environment variables
 load_dotenv()
 
@@ -24,6 +26,7 @@ market_data = MarketData()
 news_fetcher = NewsFetcher()
 telegram_monitor = TelegramMonitor()
 manual_signals = []  # Store manually analyzed signals
+teacher_agent = TeacherAgent() # Teacher Agent from SA Framework
 
 # ------------------------ ROOT & HEALTH ------------------------
 
@@ -44,7 +47,11 @@ def index():
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    return jsonify({'status': 'healthy', 'ai_available': True})
+    return jsonify({
+        'status': 'healthy',
+        'ai_available': ai_analyzer is not None,
+        'telegram_active': telegram_monitor.is_running
+    })
 
 # ------------------------ AI & MARKET ROUTES ------------------------
 
@@ -211,6 +218,28 @@ def handle_500(error):
         'message': str(error),
         'status': 500
     }), 500
+
+# -------------- RAG + SUPERIOR AGENTS INTEGRATION ------------
+@app.route("/api/agent/analyze", methods=["POST"])
+def analyze_with_agent():
+    try:
+        data = request.json
+        content = data.get("content")
+        if not content:
+            return jsonify({"error": "Missing content"}), 400
+
+        result = teacher_agent.think(content)
+
+        enriched = {
+            **result,
+            "timestamp": time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+            "id": int(time.time() * 1000)
+        }
+
+        return jsonify(enriched)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # ------------------------ ENTRY POINT ------------------------
 

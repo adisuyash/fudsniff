@@ -1,0 +1,3 @@
+[submodule "backend/superior-agents"]
+	path = backend/superior-agents
+	url = https://github.com/SuperiorAgents/superior-agents.git

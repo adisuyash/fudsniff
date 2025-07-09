@@ -8,9 +8,10 @@ Fud Sniff is a trading signal agent that sniffs real-time crypto sentiment and n
 
 ```
 fudsniff/
-├── backend/      # Powered by Superior Agents - Flask API, AI integration, market/news handlers
-├── frontend/     # Next.js UI, sentiment dashboards
-└── setup.sh      # One-click local setup
+├── backend/              # Server-side application logic & services
+│   └── superior-agents/  # Core backend engine - Powered by Superior Agents
+├── frontend/             # Next.js + Tailwind for UI and dashboards
+└── setup.sh              # One-click local setup script
 ```
 
 ## How to Setup
@@ -18,7 +19,7 @@ fudsniff/
 Clone the repository and run the setup script:
 
 ```bash
-git clone https://github.com/yourname/fudsniff.git
+git clone https://github.com/adisuyash/fudsniff.git
 cd fudsniff
 chmod +x setup.sh
 ./setup.sh
@@ -43,7 +44,10 @@ GEMINI_API_KEY=your_api_key
 # CoinGecko API Key
 COINGECKO_API_KEY=your_api_key
 
-# News API (optional - will use sample data if not provided)
+# Telegram Bot Token
+TELEGRAM_BOT_TOKEN=your_bot_token
+
+# News API Key (optional)
 NEWS_API_KEY=your_newsapi_key_here
 
 # Flask Configuration
