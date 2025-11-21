@@ -14,7 +14,7 @@ class AIAnalyzer:
         genai.configure(api_key=self.gemini_key)
 
         try:
-            self.model = genai.GenerativeModel("models/gemini-1.5-flash-latest")
+            self.model = genai.GenerativeModel("models/gemini-2.5-flash")
         except Exception as e:
             raise Exception(f"Failed to initialize Gemini model: {e}")
 
