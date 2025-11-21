@@ -18,6 +18,7 @@ backend/*.so
 backend/*.db
 backend/*.sqlite3
 backend/*.log
+*__pycache__/
 
 # Environment files (IMPORTANT for API keys!)
 .env
